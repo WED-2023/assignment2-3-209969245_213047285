@@ -24,7 +24,7 @@ router.get("/search", async (req, res, next) => {
 
 router.get("/random", async (req, res, next) => {
   try {
-    const number = req.query.number || 1;
+    const number = req.query.number || 3;
     const includeTags = req.query['include-tags'] ? req.query['include-tags'].split(',') : [];
     const excludeTags = req.query['exclude-tags'] ? req.query['exclude-tags'].split(',') : [];
     const randomRecipes = await recipes_utils.getRandomRecipes(number, includeTags, excludeTags);
@@ -38,12 +38,17 @@ router.get("/random", async (req, res, next) => {
  */
 router.get("/:recipeId", async (req, res, next) => {
   try {
-    const recipe = await recipes_utils.getRecipeDetails(req.params.recipeId);
+    const recipe_id = req.params.recipeId;
+    let recipe;
+    console.log(recipe_id);
+    recipe = await recipes_utils.getRecipeDetails(recipe_id);
+    console.log("server getRecipe:", recipe.id);
     res.send(recipe);
   } catch (error) {
     next(error);
   }
 });
+
 
 
 
